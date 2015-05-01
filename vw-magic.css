@@ -467,6 +467,7 @@ h1 {
 .fill-intrinsically {
   margin: auto;
   padding: 50rem;
+  box-sizing: border-box;
   background-color: lightgreen;
   font-size: 2.5vw;
   height: 56.25vw;
