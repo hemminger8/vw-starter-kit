@@ -103,7 +103,11 @@ html {
 	}
 }
 
-//example usage
+body {
+	margin: 0;
+}
+
+// Example usage
 h1 {
 	//simply open the photoshop file and click on the text filed and 
 	// copy and paste the exact pixel value form the Photoshop text size and 
@@ -140,7 +144,7 @@ h1 {
 
 /* FILL INTRINSICALLY */
 
-// 
+// This box will always fix fully in the browser window.
 .fill-intrinsically {
 	margin: auto;
 	background-color: lightgreen;

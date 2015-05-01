@@ -443,6 +443,9 @@ html {
     html {
       font-size: 0.8px; } }
 
+body {
+  margin: 0; }
+
 h1 {
   font-size: 28rem;
   margin: 6rem 10rem; }
