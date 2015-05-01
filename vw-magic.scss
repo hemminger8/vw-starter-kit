@@ -35,7 +35,7 @@
 
 html {
 	// fall back for older android native browsers
-	@for $i from (320/2) through ($mobile-max/2) {
+	@for $i from (320/2) through (strip-units($mobile-max)/2) {
 		@media screen and (width: $i * 2px - 1px), (width: $i * 2px) {
 			font-size: ($i * 2px) / strip-units($mobile-layout);
 		}
@@ -83,7 +83,7 @@ html {
 		font-size: (100vw/strip-units($tablet-layout));
 	}
 	// setting a max amount that your layout can scale is easy
-	@media screen and (min-width: ($tablet-layout * 1.2) {
+	@media screen and (min-width: ($tablet-layout * 1.2)) {
 		// once the layout has increased to 120 percent, 
 		// stop the scaling by setting a fixed font-size
 		// in this case 1px * 120%, or 1px * 1.2 = 1.2px
@@ -95,7 +95,7 @@ html {
 		font-size: (100vw/strip-units($desktop-layout));
 	}
 	// it is also easy to set a minimum amount for your layout to scale to
-	@media screen and (min-width: $desktop-min) and (max-width: ($desktop-layout * 0.8) {
+	@media screen and (min-width: $desktop-min) and (max-width: ($desktop-layout * 0.8)) {
 		// once the layout has decreased to 80 percent, 
 		// stop the scaling by setting a fixed font-size
 		// again, 1px * 80%, or 1px * 0.8 = 0.8px
