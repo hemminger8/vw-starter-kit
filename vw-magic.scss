@@ -147,8 +147,9 @@ h1 {
 // This box will always fix fully in the browser window.
 .fill-intrinsically {
 	margin: auto;
+	padding: 50rem;
 	background-color: lightgreen;
-	font-size: 5vw;
+	font-size: 2.5vw;
 	height: 56.25vw;
 	width: 100vw;
 }
@@ -158,7 +159,7 @@ h1 {
 		background-color: lightblue;
 		height: 100vh;
 		width: 177.77777778vh;
-		font-size: 8.888888889vh;
+		font-size: 4.444444444vh;
 	}
 }
 
