@@ -34,12 +34,12 @@ divide both sides by strip-units($mobile-layout)
 
 	1px = 100vw/strip-units($mobile-layout)
 
-so simple we don't even need a mixin
-```scss
+So simple we don't even need a mixin!
+```css
 font-size: (100vw/strip-units($mobile-layout));
 ```
 
-do the same for each layout
+Now do the same for each layout.
 ```scss
 @media screen and (min-width: $tablet-min) {
 	font-size: (100vw/strip-units($tablet-layout));
