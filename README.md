@@ -79,3 +79,5 @@ Again, 1px * 80%, or 1px * 0.8 = 0.8px
 
 It's that simple. Now simply measure things in pixels in your Photoshop layout and set them in rem's in your css.
 
+## Example
+http://hemminger8.github.io/vw-starter-kit/
