@@ -8,7 +8,7 @@ layout width is stored in the sass variable $mobile-layout.
 I want to set the font-size to a vw value such that when 
 the browser-width = $mobile-layout, 1rem = 1px so that when 
 I measure something in photoshop to be 32px I can just set it 
-to 32rem in the css (or sass) and it will match the photoshop file and scale.
+to 32rem in the css (or sass) and it will match the photoshop file and scale, like magic.
 
 	1% of browser-width = 1vw
 
@@ -57,7 +57,7 @@ Again, so simple we don't need a sass mixin.
 	font-size: 1.2px;
 }
 ```
-The max scale trick is particularly useful when you have a max width for your layout, i.e. at some point the layout stops scaling and you just center it and fill in the extra space on the sides with some color or tecture.
+The max scale trick is particularly useful when you have a max width for your layout, i.e. at some point the layout stops scaling and you just center it and fill in the extra space on the sides with some color or texture.
 
 Now don't forget that you have to set the font-size for each breakpoint.
 ```scss
