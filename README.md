@@ -1,6 +1,6 @@
-# vw-starter-kit
+# VW Starter Kit
 
-The VW Starter Kit quickly sets you up to create dynamically resizing, responsive websites (using the vw, or viewport width, CSS unit).
+The VW Starter Kit quickly sets you up to create dynamically-resizing, responsive websites (using the vw, or viewport width, CSS unit).
 
 ## Getting Started
 
