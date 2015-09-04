@@ -5,7 +5,7 @@ The VW Starter Kit quickly sets you up to create dynamically resizing, responsiv
 ## Getting Started
 
 * Add the vw-starter SASS file to your project.
-* In vw-starter.scss, set your breakpoints and base font size in the variables section.
+* In _vw-starter.scss, set your breakpoints and base font size in the variables section.
 
 ````
 
