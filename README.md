@@ -121,5 +121,19 @@ body {
 }
 ````
 
+#### Old Android Browsers Fallback
+
+For old Android native browsers, use the following fallback:
+
+````
+html {
+	@for $i from (320/2) through (strip-units($mobile-max)/2) {
+		@media screen and (width: $i * 2px - 1px), (width: $i * 2px) {
+			font-size: ($i * 2px) / strip-units($mobile-layout);
+		}
+	}
+}
+````
+
 ## Credits: 
 [Jesse Hemminger](https://github.com/hemminger8/vw-starter-kit)
