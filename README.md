@@ -28,7 +28,7 @@ The VW Starter Kit quickly sets you up to create dynamically resizing, responsiv
 
 There are a couple different ways you can use VWs in your project.
 
-1. Set a base font-size on the root <html> element. Then, in your CSS, set font-size, padding, margin, etc. for all other elements using the px2rem() function.
+Option 1: Set a base font-size on the root <html> element. Then, in your CSS, set font-size, padding, margin, etc. for all other elements using the px2rem() function.
 
 ````
 
@@ -54,7 +54,7 @@ There are a couple different ways you can use VWs in your project.
 
 ````
 
-2. To affect individual components only, set a font-size on the component container element. Then, use ems and the px2em() function to resize all component elements.
+Option 2: To affect individual components only, set a font-size on the component container element. Then, use ems and the px2em() function to resize all component elements.
 
 ````
 
@@ -121,4 +121,5 @@ body {
 }
 ````
 
-## Credits: https://github.com/hemminger8/vw-starter-kit
+## Credits: 
+[Jesse Hemminger](https://github.com/hemminger8/vw-starter-kit)
