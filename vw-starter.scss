@@ -1,0 +1,162 @@
+//
+// VW STARTER KIT
+//
+
+/* ----------------------------------------------------------------------------
+
+   Variables
+
+   Set the variables below to match your Photoshop file widths (in pixels) and to specify breakpoints based on browser window size.
+
+---------------------------------------------------------------------------- */
+
+	$base-font-size: 16px;
+
+	// layouts -- the pixel width of the Photoshop file for each layout
+	$desktop-layout: 	1250px;
+	$tablet-layout: 	640px;
+	$mobile-layout: 	320px;
+
+	// breakpoints -- the browser window size at which the layout should change
+	$desktop-min: 		900px;
+	$tablet-max: 		899px;
+	$tablet-min: 		601px;
+	$mobile-max: 		600px;
+
+
+/* ----------------------------------------------------------------------------
+
+   strip-units() : convert 14px/14em/etc to (int) 14
+
+---------------------------------------------------------------------------- */
+
+@function strip-units($number) {
+
+	@if ($number == null) {
+
+		@return null;
+
+	}
+
+	@return $number / ($number * 0 + 1);
+}
+
+/* ----------------------------------------------------------------------------
+
+   px2rem() : convert from pixels to rems
+
+---------------------------------------------------------------------------- */
+
+@function px2rem($pixels) {
+
+	$pixels                    : strip-units($pixels);
+	$unitless-base-font-size   : strip-units($base-font-size);
+
+	@return #{$pixels/$unitless-base-font-size}rem;
+}
+
+
+/* ----------------------------------------------------------------------------
+
+   px2em() : convert from pixels to ems, based on the context (inherited font-size in pixels)
+
+---------------------------------------------------------------------------- */
+
+@function px2em($pixels, $context: $base-font-size) {
+
+	$pixels    : strip-units($pixels);
+	$context   : strip-units($context);
+
+	@return #{$pixels/$context}em;
+}
+
+/* ----------------------------------------------------------------------------
+
+   vw-font-size() : used to calculate vw font size so as to match Photoshop (or similar) design files.
+
+   Example usage:
+
+		$base-font-size: 16px;
+
+		html {
+		    height: 100%;
+		    font-size: $base-font-size;
+
+			// font-size set to 16px at the desktop design layout width
+		    @media screen and (max-width: $desktop-layout) {
+		        @include vw-font-size($base-font-size, $desktop-layout);
+		    }
+
+			// font size reset to 16px at the tablet design layout width
+		    @media screen and (max-width: $tablet-max) {
+		        @include vw-font-size($base-font-size, $tablet-layout);
+		    }
+
+			// font size reset to 16px at the mobile design layout width
+		    @media screen and (max-width: $mobile-layout) {
+		        @include vw-font-size($base-font-size, $mobile-layout);
+		    }
+		}
+
+---------------------------------------------------------------------------- */
+
+@mixin vw-font-size($font-size-px, $layout-size-px, $min-font-size-px: null, $max-font-size-px: null) {
+
+	$font-size-px     : strip-units($font-size-px);
+	$layout-size-px   : strip-units($layout-size-px);
+	$min-font-size-px : strip-units($min-font-size-px);
+	$max-font-size-px : strip-units($max-font-size-px);
+
+	font-size: ($font-size-px / $layout-size-px) * 100vw;
+
+
+	// OPTIONAL: set universal min- and max-font-sizes for accessibility and // so that sizes do not increase infinitely, respectively
+	@if ($min-font-size-px) {
+
+		@media screen and (max-width: (($min-font-size-px / $font-size-px) * $layout-size-px) * 1px) {
+
+			font-size: #{$min-font-size-px}px;
+
+		}
+
+	}
+
+	@if ($max-font-size-px) {
+
+		@media screen and (min-width: (($max-font-size-px / $font-size-px) * $layout-size-px) * 1px) {
+
+			font-size: #{$max-font-size-px}px;
+
+		}
+
+	}
+
+}
+
+/* ----------------------------------------------------------------------------
+
+	vminBreakpoint() & vmaxBreakpoint() - calculate min/max font size breakpoints (for specific components)
+
+	Example usage:
+
+		blockquote {
+			font-size: px2rem(17); // scaling down from a base size of 17px
+
+			// when font-size shrinks to 12px, set the CSS to 12px to stop
+			// further scaling
+			@media (max-width: vminBreakpoint(12px, $desktop-layout, 17px)) {
+				font-size: 12px;
+			}
+		}
+
+---------------------------------------------------------------------------- */
+
+@function vminBreakpoint($min-font-size-px, $layout-size-px, $font-size-px: $base-font-size) {
+
+	@return (($min-font-size-px / $font-size-px) * $layout-size-px);
+}
+
+@function vmaxBreakpoint($max-font-size-px, $layout-size-px, $font-size-px: $base-font-size) {
+
+	@return (($max-font-size-px / $font-size-px) * $layout-size-px);
+}

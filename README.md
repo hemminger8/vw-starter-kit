@@ -1,83 +1,124 @@
 # vw-starter-kit
-Get ready to have your mind blown by the magic of vw CSS units and take your CSS acrobatics to the next level.
 
-## How it works
-If you haven't heard of vw's before, it is a new CSS unit of measure and basically 1vw = 1% of the width of the viewport.
-Our layout is designed at a certain width, in this example the 
-layout width is stored in the sass variable $mobile-layout.
-I want to set the font-size to a vw value such that when 
-the browser-width = $mobile-layout, 1rem = 1px so that when 
-I measure something in photoshop to be 32px I can just set it 
-to 32rem in the css (or sass) and it will match the photoshop file and scale, like magic.
+The VW Starter Kit quickly sets you up to create dynamically resizing, responsive websites (using the vw, or viewport width, CSS unit).
 
-	1% of browser-width = 1vw
+## Getting Started
 
-or writen another way
+* Add the vw-starter SASS file to your project.
+* In vw-starter.scss, set your breakpoints and base font size in the variables section.
 
-	browser-width * 0.01 = 1vw
+````
 
-Because we said above that we want to find the vw value for 1px
-when browser-width = $mobile-layout, we can substitute 
-browser-width = $mobile-layout
+	$base-font-size: 16px;
 
-	$mobile-layout * 0.01 = 1vw
+	// layouts -- the pixel width of the Photoshop file for each layout
+	$desktop-layout: 	1250px;
+	$tablet-layout: 	640px;
+	$mobile-layout: 	320px;
 
-separate the px units from the value
+	// breakpoints -- the browser window size at which the layout should change
+	$desktop-min: 		900px;
+	$tablet-max: 		899px;
+	$tablet-min: 		601px;
+	$mobile-max: 		600px;
 
-	strip-units($mobile-layout) * 1px * 0.01 = 1vw
+````
 
-divide both sides by 0.01
+## Usage
 
-	strip-units($mobile-layout) * 1px = 100vw
+There are a couple different ways you can use VWs in your project.
 
-divide both sides by strip-units($mobile-layout)
+1. Set a base font-size on the root <html> element. Then, in your CSS, set font-size, padding, margin, etc. for all other elements using the px2rem() function.
 
-	1px = 100vw/strip-units($mobile-layout)
+````
 
-So simple we don't even need a mixin!
-```css
-font-size: (100vw/strip-units($mobile-layout));
-```
+	html {
+	    height: 100%;
+	    font-size: $base-font-size;
 
-Now do the same for each layout.
-```scss
-@media screen and (min-width: $tablet-min) {
-	font-size: (100vw/strip-units($tablet-layout));
+		// font-size set to 16px at the desktop design layout width
+	    @media screen and (max-width: $desktop-layout) {
+	        @include vw-font-size($base-font-size, $desktop-layout);
+	    }
+
+		// font size reset to 16px at the tablet design layout width
+	    @media screen and (max-width: $tablet-max) {
+	        @include vw-font-size($base-font-size, $tablet-layout);
+	    }
+
+		// font size reset to 16px at the mobile design layout width
+	    @media screen and (max-width: $mobile-layout) {
+	        @include vw-font-size($base-font-size, $mobile-layout);
+	    }
+	}
+
+````
+
+2. To affect individual components only, set a font-size on the component container element. Then, use ems and the px2em() function to resize all component elements.
+
+````
+
+	header {
+
+		font-size: $base-font-size;
+
+	    @media screen and (max-width: $desktop-layout) {
+	        @include vw-font-size($base-font-size, $desktop-layout);
+	    }
+
+	    @media screen and (max-width: $tablet-max) {
+	        @include vw-font-size($base-font-size, $tablet-layout);
+	    }
+
+	    @media screen and (max-width: $mobile-layout) {
+	        @include vw-font-size($base-font-size, $mobile-layout);
+	    }
+
+
+	    h1 {
+			font-size: px2em(48);
+			margin: px2em(30, 48) 0;
+		}
+
+		h2 {
+			font-size: px2em(36);
+		}
+
+    }
+
+````
+
+### Setting minimum and maximum font sizes
+
+For accessibility to and to avoid text that resizes until infinity, you can set min and max font sizes using the vminBreakpoint() and vmaxBreakpoint() functions.
+
+Example:
+
+````
+
+	h2 {
+		font-size: px2em(16);
+
+		// when the text becomes smaller than 12px, double its size!
+		@media (max-width: vminBreakpoint(12px, $desktop-layout, 16px)) {
+			font-size: px2em(16*2);
+		}
+	}
+
+````
+
+### VW Quirks & Fixes
+
+#### Body Width Bug Fix
+
+In many browsers, 100vw is not equivalent to 100% on the body element--the scroll bars are taken into account for % but not for vws. The relatively easy fix below forces the body to be 100vw wide. If 100vw is larger than 100% it applies a negative margin to center the body. The only caveat is that a little bit of your page will be trimmed on the sides.
+
+````
+body {
+	width: 100vw;
+	margin-left: calc((100% - 100vw) / 2);
+	overflow-x: hidden;
 }
-```
+````
 
-Setting a max scale amount for your layout is just as easy.
-
-Once the layout has increased to 120 percent (i.e. $tablet-layout * 1.2), 
-stop the scaling by setting a fixed font-size.
-In this case 1px * 120%, or 1px * 1.2 = 1.2px.
-Again, so simple we don't need a sass mixin.
-```scss
-@media screen and (min-width: ($tablet-layout * 1.2)) {
-	font-size: 1.2px;
-}
-```
-The max scale trick is particularly useful when you have a max width for your layout, i.e. at some point the layout stops scaling and you just center it and fill in the extra space on the sides with some color or texture.
-
-Now don't forget that you have to set the font-size for each breakpoint.
-```scss
-@media screen and (min-width: $desktop-min) {
-	font-size: (100vw/strip-units($desktop-layout));
-}
-```
-
-It is also easy to set a minimum scale amount for your layout. But to be honest I don't ever do this because it just reintroduces the problem that we are trying to solve with vw's, namely issues with wrapping as the width changes. Instead I just have a tablet layout that kicks in before the text becomes too small to be readable.
-
-Once the layout has decreased to 80 percent (i.e. $desktop-layout * 0.8), 
-stop the scaling by setting a fixed font-size.
-Again, 1px * 80%, or 1px * 0.8 = 0.8px
-```scss
-@media screen and (min-width: $desktop-min) and (max-width: ($desktop-layout * 0.8)) {
-	font-size: 0.8px;
-}
-```
-
-It's that simple. Now simply measure things in pixels in your Photoshop layout and set them in rem's in your css.
-
-## Example
-http://hemminger8.github.io/vw-starter-kit/
+## Credits: https://github.com/hemminger8/vw-starter-kit
