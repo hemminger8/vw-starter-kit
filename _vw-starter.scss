@@ -1,0 +1,162 @@
+//
+// VW STARTER KIT
+// https://github.com/hemminger8/vw-starter-kit
+//
+
+/* ----------------------------------------------------------------------------
+
+   Variables
+
+   Set the variables below to match your Photoshop file widths (in pixels) and to specify breakpoints based on browser window size.
+
+---------------------------------------------------------------------------- */
+
+	$base-font-size: 16px;
+
+	// layouts -- the pixel width of the Photoshop file for each layout
+	// min max -- the browser window size at which the layout should change
+	$desktop: (
+		max:    1250px,
+		layout: 1250px,
+		min:    900px
+	);
+	$tablet: (
+		max:    899px,
+		layout: 640px,
+		min:    601px
+	);
+	$mobile: (
+		max:    600px,
+		layout: 320px,
+		min:    0px
+	);
+
+	$breakpoints: ($desktop, $tablet, $mobile);
+
+
+/* ----------------------------------------------------------------------------
+
+   strip-units() : convert 14px/14em/etc to (int) 14
+
+---------------------------------------------------------------------------- */
+
+@function strip-units($number) {
+
+	@if ($number == null) {
+
+		@return null;
+
+	}
+
+	@return $number / ($number * 0 + 1);
+}
+
+/* ----------------------------------------------------------------------------
+
+   px2rem() : convert from pixels to rems
+
+---------------------------------------------------------------------------- */
+
+@function px2rem($pixels) {
+
+	$pixels                    : strip-units($pixels);
+	$unitless-base-font-size   : strip-units($base-font-size);
+
+	@return #{$pixels/$unitless-base-font-size}rem;
+}
+
+
+/* ----------------------------------------------------------------------------
+
+   px2em() : convert from pixels to ems, based on the context (inherited font-size in pixels)
+
+---------------------------------------------------------------------------- */
+
+@function px2em($pixels, $context: $base-font-size) {
+
+	$pixels    : strip-units($pixels);
+	$context   : strip-units($context);
+
+	@return #{$pixels/$context}em;
+}
+
+/* ----------------------------------------------------------------------------
+
+   px2vw() : used to calculate vw font size so as to match Photoshop (or similar) design files.
+
+   Example usage:
+
+		$base-font-size: 16px;
+
+		html {
+			font-size: $base-font-size;
+
+			// set font-size to scale until reach max width of the site
+			@media screen and (max-width: $desktop-max) {
+				font-size: px2vw($base-font-size, $desktop-layout);
+			}
+
+			// font size reset to 16px at the tablet design layout width
+			@media screen and (max-width: $tablet-max) {
+				font-size: px2vw($base-font-size, $tablet-layout);
+			}
+
+			// font size reset to 16px at the mobile design layout width
+			@media screen and (max-width: $mobile-max) {
+				font-size: px2vw($base-font-size, $mobile-layout);
+			}
+		}
+
+---------------------------------------------------------------------------- */
+
+@function px2vw($font-size-px, $layout-size-px) {
+
+	$font-size-px     : strip-units($font-size-px);
+	$layout-size-px   : strip-units($layout-size-px);
+
+	@return ($font-size-px / $layout-size-px) * 100vw;
+}
+
+/* ----------------------------------------------------------------------------
+
+   vw-base(16px, (("layout-max-width": 1250, "layout-size": 1250),("layout-max-width": 600, "layout-size": 320))) : 
+   vw-base(16px, (("layout-max-width": 1250, "layout-size": 1250),("layout-max-width": 960, "layout-size": 768),("layout-max-width": 600, "layout-size": 320))) : 
+
+
+---------------------------------------------------------------------------- */
+
+@mixin vw-base($font-size-px: $base-font-size) {
+
+	font-size: $font-size-px;
+
+	@each $breakpoint in $breakpoints {
+		// set font-size to scale until reach max width of the site
+		@media screen and (max-width: map-get($breakpoint, "max")) {
+			font-size: px2vw($font-size-px, map-get($breakpoint, "layout"));
+		}
+		
+	}
+}
+
+/* ----------------------------------------------------------------------------
+
+	font-size-breakpoint() - calculate min/max font size breakpoints (for specific components)
+
+	Example usage:
+
+		blockquote {
+			font-size: px2rem(17); // scaling down from a base size of 17px
+
+			// when font-size shrinks to 12px, set the CSS to 12px to stop
+			// further scaling
+			@media (max-width: font-size-breakpoint(12px, $desktop-layout, 17px)) {
+				font-size: 12px;
+			}
+		}
+
+---------------------------------------------------------------------------- */
+
+@function font-size-breakpoint($font-size-limit-px, $layout-size-px, $font-size-px: $base-font-size) {
+
+	@return (($font-size-limit-px / $font-size-px) * $layout-size-px);
+}
