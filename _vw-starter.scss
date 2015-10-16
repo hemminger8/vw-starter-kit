@@ -1,5 +1,6 @@
 //
 // VW STARTER KIT
+// https://github.com/hemminger8/vw-starter-kit
 //
 
 /* ----------------------------------------------------------------------------
@@ -18,6 +19,7 @@
 	$mobile-layout: 	320px;
 
 	// breakpoints -- the browser window size at which the layout should change
+	$desktop-max: 		1250px;
 	$desktop-min: 		900px;
 	$tablet-max: 		899px;
 	$tablet-min: 		601px;
@@ -72,70 +74,44 @@
 
 /* ----------------------------------------------------------------------------
 
-   vw-font-size() : used to calculate vw font size so as to match Photoshop (or similar) design files.
+   px2vw() : used to calculate vw font size so as to match Photoshop (or similar) design files.
 
    Example usage:
 
 		$base-font-size: 16px;
 
 		html {
-		    height: 100%;
 		    font-size: $base-font-size;
 
-			// font-size set to 16px at the desktop design layout width
-		    @media screen and (max-width: $desktop-layout) {
-		        @include vw-font-size($base-font-size, $desktop-layout);
+			// set font-size to scale until reach max width of the site
+		    @media screen and (max-width: $desktop-max) {
+		        font-size: px2vw($base-font-size, $desktop-layout);
 		    }
 
 			// font size reset to 16px at the tablet design layout width
 		    @media screen and (max-width: $tablet-max) {
-		        @include vw-font-size($base-font-size, $tablet-layout);
+		        font-size: px2vw($base-font-size, $tablet-layout);
 		    }
 
 			// font size reset to 16px at the mobile design layout width
-		    @media screen and (max-width: $mobile-layout) {
-		        @include vw-font-size($base-font-size, $mobile-layout);
+		    @media screen and (max-width: $mobile-max) {
+		        font-size: px2vw($base-font-size, $mobile-layout);
 		    }
 		}
 
 ---------------------------------------------------------------------------- */
 
-@mixin vw-font-size($font-size-px, $layout-size-px, $min-font-size-px: null, $max-font-size-px: null) {
+@function px2vw($font-size-px, $layout-size-px) {
 
 	$font-size-px     : strip-units($font-size-px);
 	$layout-size-px   : strip-units($layout-size-px);
-	$min-font-size-px : strip-units($min-font-size-px);
-	$max-font-size-px : strip-units($max-font-size-px);
 
-	font-size: ($font-size-px / $layout-size-px) * 100vw;
-
-
-	// OPTIONAL: set universal min- and max-font-sizes for accessibility and // so that sizes do not increase infinitely, respectively
-	@if ($min-font-size-px) {
-
-		@media screen and (max-width: (($min-font-size-px / $font-size-px) * $layout-size-px) * 1px) {
-
-			font-size: #{$min-font-size-px}px;
-
-		}
-
-	}
-
-	@if ($max-font-size-px) {
-
-		@media screen and (min-width: (($max-font-size-px / $font-size-px) * $layout-size-px) * 1px) {
-
-			font-size: #{$max-font-size-px}px;
-
-		}
-
-	}
-
+	@return ($font-size-px / $layout-size-px) * 100vw;
 }
 
 /* ----------------------------------------------------------------------------
 
-	vminBreakpoint() & vmaxBreakpoint() - calculate min/max font size breakpoints (for specific components)
+	font-size-breakpoint() - calculate min/max font size breakpoints (for specific components)
 
 	Example usage:
 
@@ -144,19 +120,14 @@
 
 			// when font-size shrinks to 12px, set the CSS to 12px to stop
 			// further scaling
-			@media (max-width: vminBreakpoint(12px, $desktop-layout, 17px)) {
+			@media (max-width: font-size-breakpoint(12px, $desktop-layout, 17px)) {
 				font-size: 12px;
 			}
 		}
 
 ---------------------------------------------------------------------------- */
 
-@function vminBreakpoint($min-font-size-px, $layout-size-px, $font-size-px: $base-font-size) {
+@function font-size-breakpoint($font-size-limit-px, $layout-size-px, $font-size-px: $base-font-size) {
 
-	@return (($min-font-size-px / $font-size-px) * $layout-size-px);
-}
-
-@function vmaxBreakpoint($max-font-size-px, $layout-size-px, $font-size-px: $base-font-size) {
-
-	@return (($max-font-size-px / $font-size-px) * $layout-size-px);
+	@return (($font-size-limit-px / $font-size-px) * $layout-size-px);
 }

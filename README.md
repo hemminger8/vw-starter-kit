@@ -33,23 +33,27 @@ Option 1: Set a base font-size on the root <html> element. Then, in your CSS, se
 ````
 
 	html {
-	    height: 100%;
-	    font-size: $base-font-size;
+		font-size: $base-font-size;
 
-		// font-size set to 16px at the desktop design layout width
-	    @media screen and (max-width: $desktop-layout) {
-	        @include vw-font-size($base-font-size, $desktop-layout);
-	    }
+		// set font-size to scale until reach max width of the site
+		@media screen and (max-width: $desktop-max) {
+			font-size: px2vw($base-font-size, $desktop-layout);
+		}
 
 		// font size reset to 16px at the tablet design layout width
-	    @media screen and (max-width: $tablet-max) {
-	        @include vw-font-size($base-font-size, $tablet-layout);
-	    }
+		@media screen and (max-width: $tablet-max) {
+			font-size: px2vw($base-font-size, $tablet-layout);
+		}
 
 		// font size reset to 16px at the mobile design layout width
-	    @media screen and (max-width: $mobile-layout) {
-	        @include vw-font-size($base-font-size, $mobile-layout);
-	    }
+		@media screen and (max-width: $mobile-max) {
+			font-size: px2vw($base-font-size, $mobile-layout);
+		}
+	}
+
+	h1 {
+		font-size: px2rem(48);
+		margin: px2rem(30) 0;
 	}
 
 ````
@@ -62,20 +66,20 @@ Option 2: To affect individual components only, set a font-size on the component
 
 		font-size: $base-font-size;
 
-	    @media screen and (max-width: $desktop-layout) {
-	        @include vw-font-size($base-font-size, $desktop-layout);
-	    }
+		@media screen and (max-width: $desktop-layout) {
+			@include vw-font-size($base-font-size, $desktop-layout);
+		}
 
-	    @media screen and (max-width: $tablet-max) {
-	        @include vw-font-size($base-font-size, $tablet-layout);
-	    }
+		@media screen and (max-width: $tablet-max) {
+			@include vw-font-size($base-font-size, $tablet-layout);
+		}
 
-	    @media screen and (max-width: $mobile-layout) {
-	        @include vw-font-size($base-font-size, $mobile-layout);
-	    }
+		@media screen and (max-width: $mobile-layout) {
+			@include vw-font-size($base-font-size, $mobile-layout);
+		}
 
 
-	    h1 {
+		h1 {
 			font-size: px2em(48);
 			margin: px2em(30, 48) 0;
 		}
@@ -84,7 +88,7 @@ Option 2: To affect individual components only, set a font-size on the component
 			font-size: px2em(36);
 		}
 
-    }
+	}
 
 ````
 
@@ -135,5 +139,5 @@ html {
 }
 ````
 
-## Credits: 
+## Credits:
 [Jesse Hemminger](https://github.com/hemminger8/vw-starter-kit)
