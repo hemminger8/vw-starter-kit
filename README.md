@@ -4,7 +4,7 @@ The VW Starter Kit quickly sets you up to create dynamically-resizing, responsiv
 
 ## Getting Started
 
-* Add the _vw-starter SASS file to your project.
+* Add the _vw-starter.scss SASS file to your project.
 * In _vw-starter.scss, set your breakpoints, layout widths, and base font size in the variables section.
 
 ````
@@ -94,13 +94,13 @@ In many browsers, 100vw is not equivalent to 100% on the <html> element--the scr
 
 ````
 
-html {
-	@media screen {
-		width: 100vw;
-		margin-left: calc((100% - 100vw) / 2);
-		overflow-x: hidden;
+	html {
+		@media screen {
+			width: 100vw;
+			margin-left: calc((100% - 100vw) / 2);
+			overflow-x: hidden;
+		}
 	}
-}
 
 ````
 
@@ -108,9 +108,9 @@ To disable the fix in the vw-base mixin (for e.g., if you're applying vw-base to
 
 ````
 
-html {
-	@include vw-base(false);
-}
+	html {
+		@include vw-base(false);
+	}
 
 ````
 
