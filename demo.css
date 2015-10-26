@@ -1,8 +1,3 @@
-//
-// VW STARTER KIT
-// https://github.com/hemminger8/vw-starter-kit
-//
-
 /* ----------------------------------------------------------------------------
 
    Variables
@@ -10,68 +5,21 @@
    Set the variables below to match your Photoshop file widths (in pixels) and to specify breakpoints based on browser window size.
 
 ---------------------------------------------------------------------------- */
-
-	// base font size must be in pixels!!!
-	$base-font-size: 16px;
-
-	// layouts -- the pixel width of the Photoshop file for each layout
-	$desktop-layout:	1250px;
-	$tablet-layout:		640px;
-	$mobile-layout:		320px;
-
-	// min max breakpoints -- the browser window size at which the layout should change
-	$desktop-max: 		1250px;
-	$desktop-min: 		900px;
-	$tablet-max: 		899px;
-	$tablet-min: 		601px;
-	$mobile-max: 		600px;
-
 /* ----------------------------------------------------------------------------
 
    strip-units() : convert 14px/14em/etc to (int) 14
 
 ---------------------------------------------------------------------------- */
-
-@function strip-units($number) {
-
-	@if ($number == null) {
-
-		@return null;
-
-	}
-
-	@return $number / ($number * 0 + 1);
-}
-
 /* ----------------------------------------------------------------------------
 
    px2rem() : convert from pixels to rems
 
 ---------------------------------------------------------------------------- */
-
-@function px2rem($pixels) {
-
-	$pixels                    : strip-units($pixels);
-	$unitless-base-font-size   : strip-units($base-font-size);
-
-	@return #{$pixels/$unitless-base-font-size}rem;
-}
-
-
 /* ----------------------------------------------------------------------------
 
    px2em() : convert from pixels to ems, based on the context (inherited font-size in pixels)
 
 ---------------------------------------------------------------------------- */
-
-@function px2em($pixels, $context: $base-font-size) {
-
-	$pixels    : strip-units($pixels);
-	$context   : strip-units($context);
-
-	@return #{$pixels/$context}em;
-}
-
 /* ----------------------------------------------------------------------------
 
    px2vw() : used to calculate vw font size so as to match Photoshop (or similar) design files.
@@ -100,49 +48,11 @@
 		}
 
 ---------------------------------------------------------------------------- */
-
-@function px2vw($font-size-px, $layout-size-px) {
-
-	$font-size-px     : strip-units($font-size-px);
-	$layout-size-px   : strip-units($layout-size-px);
-
-	@return ($font-size-px / $layout-size-px) * 100vw;
-}
-
 /* ----------------------------------------------------------------------------
 
 	vw-base() - set base font-size values in vws for each breakpoint
 
 ---------------------------------------------------------------------------- */
-
-@mixin vw-base($body-width-fix: true) {
-
-	@if ($body-width-fix) {
-		@media screen {
-			width: 100vw;
-			margin-left: calc((100% - 100vw) / 2);
-			overflow-x: hidden;
-		}
-	}
-
-	font-size: $base-font-size * ($desktop-max/$desktop-layout);
-
-	// set font-size to scale until reach max width of the site
-	@media screen and (max-width: $desktop-max) {
-		font-size: px2vw($base-font-size, $desktop-layout);
-	}
-
-	// font size reset to 16px at the tablet design layout width
-	@media screen and (max-width: $tablet-max) {
-		font-size: px2vw($base-font-size, $tablet-layout);
-	}
-
-	// font size reset to 16px at the mobile design layout width
-	@media screen and (max-width: $mobile-max) {
-		font-size: px2vw($base-font-size, $mobile-layout);
-	}
-}
-
 /* ----------------------------------------------------------------------------
 
 	font-size-breakpoint() - calculate min/max font size breakpoints (for specific components)
@@ -160,8 +70,59 @@
 		}
 
 ---------------------------------------------------------------------------- */
+* {
+  box-sizing: border-box; }
 
-@function font-size-breakpoint($font-size-limit-px, $layout-size-px, $font-size-px: $base-font-size) {
+html {
+  font-size: 16px; }
+  @media screen {
+    html {
+      width: 100vw;
+      margin-left: calc((100% - 100vw) / 2);
+      overflow-x: hidden; } }
+  @media screen and (max-width: 1250px) {
+    html {
+      font-size: 1.28vw; } }
+  @media screen and (max-width: 899px) {
+    html {
+      font-size: 2.5vw; } }
+  @media screen and (max-width: 600px) {
+    html {
+      font-size: 5vw; } }
 
-	@return (($font-size-limit-px / $font-size-px) * $layout-size-px);
-}
+@media screen {
+  body {
+    width: 100vw;
+    margin-left: calc((100% - 100vw) / 2);
+    overflow-x: hidden; } }
+
+h1 {
+  font-size: 3.125rem;
+  text-align: center; }
+
+h2 {
+  font-size: 1.875rem; }
+
+img {
+  display: block;
+  float: left;
+  padding: 0 0.9375rem;
+  width: 18.75rem; }
+  @media screen and (max-width: 899px) {
+    img {
+      margin: 0 auto;
+      padding: 1.875rem 1.25rem;
+      width: 50%; } }
+  @media screen and (max-width: 600px) {
+    img {
+      float: none;
+      width: 100%; } }
+
+div {
+  margin: 0 auto;
+  width: 56.25rem; }
+  @media screen and (max-width: 899px) {
+    div {
+      width: 100%; } }
+
+/*# sourceMappingURL=demo.css.map */

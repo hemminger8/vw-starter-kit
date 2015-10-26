@@ -1,83 +1,124 @@
-# vw-starter-kit
-Get ready to have your mind blown by the magic of vw CSS units and take your CSS acrobatics to the next level.
+# VW Starter Kit
 
-## How it works
-If you haven't heard of vw's before, it is a new CSS unit of measure and basically 1vw = 1% of the width of the viewport.
-Our layout is designed at a certain width, in this example the 
-layout width is stored in the sass variable $mobile-layout.
-I want to set the font-size to a vw value such that when 
-the browser-width = $mobile-layout, 1rem = 1px so that when 
-I measure something in photoshop to be 32px I can just set it 
-to 32rem in the css (or sass) and it will match the photoshop file and scale, like magic.
+The VW Starter Kit quickly sets you up to create dynamically-resizing, responsive websites (using the vw, or viewport width, CSS unit).
 
-	1% of browser-width = 1vw
+## Getting Started
 
-or writen another way
+* Add the _vw-starter.scss SASS file to your project.
+* In _vw-starter.scss, set your breakpoints, layout widths, and base font size in the variables section.
 
-	browser-width * 0.01 = 1vw
+````
 
-Because we said above that we want to find the vw value for 1px
-when browser-width = $mobile-layout, we can substitute 
-browser-width = $mobile-layout
+	$base-font-size: 16px;
 
-	$mobile-layout * 0.01 = 1vw
+	// layouts -- the pixel width of the Photoshop file for each layout
+	$desktop-layout: 	1250px;
+	$tablet-layout: 	640px;
+	$mobile-layout: 	320px;
 
-separate the px units from the value
+	// breakpoints -- the browser window size at which the layout should change
+	$desktop-min: 		900px;
+	$tablet-max: 		899px;
+	$tablet-min: 		601px;
+	$mobile-max: 		600px;
 
-	strip-units($mobile-layout) * 1px * 0.01 = 1vw
+````
 
-divide both sides by 0.01
+## Usage
 
-	strip-units($mobile-layout) * 1px = 100vw
+There are a couple different ways you can use VWs in your project.
 
-divide both sides by strip-units($mobile-layout)
+Option 1: Apply the vw-base mixin to the root <html> element. Then, in your CSS, set your style measurements (font-size, padding, margin, etc.) for all other elements using the px2rem() function.
 
-	1px = 100vw/strip-units($mobile-layout)
+````
 
-So simple we don't even need a mixin!
-```css
-font-size: (100vw/strip-units($mobile-layout));
-```
+	html {
+		@include vw-base;
+	}
 
-Now do the same for each layout.
-```scss
-@media screen and (min-width: $tablet-min) {
-	font-size: (100vw/strip-units($tablet-layout));
-}
-```
+	h1 {
+		font-size: px2rem(48);
+		margin: px2rem(30) 0;
+	}
 
-Setting a max scale amount for your layout is just as easy.
+````
 
-Once the layout has increased to 120 percent (i.e. $tablet-layout * 1.2), 
-stop the scaling by setting a fixed font-size.
-In this case 1px * 120%, or 1px * 1.2 = 1.2px.
-Again, so simple we don't need a sass mixin.
-```scss
-@media screen and (min-width: ($tablet-layout * 1.2)) {
-	font-size: 1.2px;
-}
-```
-The max scale trick is particularly useful when you have a max width for your layout, i.e. at some point the layout stops scaling and you just center it and fill in the extra space on the sides with some color or texture.
+Option 2: To affect individual components only, apply the vw-base mixin to the component container element. Then, use ems and the px2em() function to resize all component elements.
 
-Now don't forget that you have to set the font-size for each breakpoint.
-```scss
-@media screen and (min-width: $desktop-min) {
-	font-size: (100vw/strip-units($desktop-layout));
-}
-```
+````
 
-It is also easy to set a minimum scale amount for your layout. But to be honest I don't ever do this because it just reintroduces the problem that we are trying to solve with vw's, namely issues with wrapping as the width changes. Instead I just have a tablet layout that kicks in before the text becomes too small to be readable.
+	header {
+		@include vw-base;
 
-Once the layout has decreased to 80 percent (i.e. $desktop-layout * 0.8), 
-stop the scaling by setting a fixed font-size.
-Again, 1px * 80%, or 1px * 0.8 = 0.8px
-```scss
-@media screen and (min-width: $desktop-min) and (max-width: ($desktop-layout * 0.8)) {
-	font-size: 0.8px;
-}
-```
+		h1 {
+			font-size: px2em(48);
+			margin: px2em(30, 48) 0;
+		}
 
-It's that simple. Now simply measure things in pixels in your Photoshop layout and set them in rem's in your css.
+		h2 {
+			font-size: px2em(36);
+		}
+	}
 
-## Example
-http://hemminger8.github.io/vw-starter-kit/
+````
+
+### Setting minimum and maximum font sizes
+
+To avoid text that gets too small or expands too large, you can set min and max font sizes using the font-size-breakpoint() function.
+
+Example:
+
+````
+
+	h2 {
+		font-size: px2em(16);
+
+		// when the text scales down to 12px, set a fixed font-size of 12px on desktop
+		@media screen and (max-width: font-size-breakpoint(12px, $desktop-layout, 16px)) and (min-width: $desktop-min) {
+			font-size: 12px;
+		}
+
+		// when the text scales up to 20px, set a fixed font-size of 20px on tablet
+		@media screen and (max-width: $tablet-max) and (min-width: font-size-breakpoint(20px, $tablet-layout, 16px)) {
+			font-size: 20px;
+		}
+	}
+
+````
+
+### VW Quirks & Fixes
+
+#### Body Width Bug Fix
+
+In many browsers, 100vw is not equivalent to 100% on the <html> element--the scroll bars are taken into account for % but not for vws. The relatively easy fix below forces <html> to be 100vw wide and is included, by default, in the vw-base mixin. If 100vw is larger than 100% it applies a negative margin to center the <html> element. The only caveat is that a little bit of your page will be trimmed on the sides.
+
+````
+
+	html {
+		@media screen {
+			width: 100vw;
+			margin-left: calc((100% - 100vw) / 2);
+			overflow-x: hidden;
+		}
+	}
+
+````
+
+To disable the fix in the vw-base mixin (for e.g., if you're applying vw-base to components, rather than to the <html> element) pass a value of false to the mixin:
+
+````
+
+	html {
+		@include vw-base(false);
+	}
+
+````
+
+####Print Stylesheets
+
+VWs are interpreted as 0px when you print which renders elements invisible. To avoid undesirable styling, keep all vw styles within @media screen blocks.
+
+Style for desktop first, then use @media **screen** to override your styles for tablet and mobile.
+
+### Browser Compatibility
+IE9+, Firefox, Chrome, Safari, iOS, Android 4.4+
