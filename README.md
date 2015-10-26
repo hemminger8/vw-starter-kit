@@ -4,8 +4,8 @@ The VW Starter Kit quickly sets you up to create dynamically-resizing, responsiv
 
 ## Getting Started
 
-* Add the vw-starter SASS file to your project.
-* In _vw-starter.scss, set your breakpoints and base font size in the variables section.
+* Add the _vw-starter SASS file to your project.
+* In _vw-starter.scss, set your breakpoints, layout widths, and base font size in the variables section.
 
 ````
 
@@ -28,27 +28,12 @@ The VW Starter Kit quickly sets you up to create dynamically-resizing, responsiv
 
 There are a couple different ways you can use VWs in your project.
 
-Option 1: Set a base font-size on the root <html> element. Then, in your CSS, set font-size, padding, margin, etc. for all other elements using the px2rem() function.
+Option 1: Apply the vw-base mixin to the root <html> element. Then, in your CSS, set your style measurements (font-size, padding, margin, etc.) for all other elements using the px2rem() function.
 
 ````
 
 	html {
-		font-size: $base-font-size;
-
-		// set font-size to scale until reach max width of the site
-		@media screen and (max-width: $desktop-max) {
-			font-size: px2vw($base-font-size, $desktop-layout);
-		}
-
-		// font size reset to 16px at the tablet design layout width
-		@media screen and (max-width: $tablet-max) {
-			font-size: px2vw($base-font-size, $tablet-layout);
-		}
-
-		// font size reset to 16px at the mobile design layout width
-		@media screen and (max-width: $mobile-max) {
-			font-size: px2vw($base-font-size, $mobile-layout);
-		}
+		@include vw-base;
 	}
 
 	h1 {
@@ -58,26 +43,12 @@ Option 1: Set a base font-size on the root <html> element. Then, in your CSS, se
 
 ````
 
-Option 2: To affect individual components only, set a font-size on the component container element. Then, use ems and the px2em() function to resize all component elements.
+Option 2: To affect individual components only, apply the vw-base mixin to the component container element. Then, use ems and the px2em() function to resize all component elements.
 
 ````
 
 	header {
-
-		font-size: $base-font-size;
-
-		@media screen and (max-width: $desktop-layout) {
-			@include vw-font-size($base-font-size, $desktop-layout);
-		}
-
-		@media screen and (max-width: $tablet-max) {
-			@include vw-font-size($base-font-size, $tablet-layout);
-		}
-
-		@media screen and (max-width: $mobile-layout) {
-			@include vw-font-size($base-font-size, $mobile-layout);
-		}
-
+		@include vw-base;
 
 		h1 {
 			font-size: px2em(48);
@@ -87,14 +58,13 @@ Option 2: To affect individual components only, set a font-size on the component
 		h2 {
 			font-size: px2em(36);
 		}
-
 	}
 
 ````
 
 ### Setting minimum and maximum font sizes
 
-For accessibility to and to avoid text that resizes until infinity, you can set min and max font sizes using the vminBreakpoint() and vmaxBreakpoint() functions.
+To avoid text that gets too small or expands too large, you can set min and max font sizes using the font-size-breakpoint() function.
 
 Example:
 
@@ -103,9 +73,14 @@ Example:
 	h2 {
 		font-size: px2em(16);
 
-		// when the text becomes smaller than 12px, double its size!
-		@media (max-width: vminBreakpoint(12px, $desktop-layout, 16px)) {
-			font-size: px2em(16*2);
+		// when the text scales down to 12px, set a fixed font-size of 12px on desktop
+		@media screen and (max-width: font-size-breakpoint(12px, $desktop-layout, 16px)) and (min-width: $desktop-min) {
+			font-size: 12px;
+		}
+
+		// when the text scales up to 20px, set a fixed font-size of 20px on tablet
+		@media screen and (max-width: $tablet-max) and (min-width: font-size-breakpoint(20px, $tablet-layout, 16px)) {
+			font-size: 20px;
 		}
 	}
 
@@ -115,29 +90,35 @@ Example:
 
 #### Body Width Bug Fix
 
-In many browsers, 100vw is not equivalent to 100% on the body element--the scroll bars are taken into account for % but not for vws. The relatively easy fix below forces the body to be 100vw wide. If 100vw is larger than 100% it applies a negative margin to center the body. The only caveat is that a little bit of your page will be trimmed on the sides.
+In many browsers, 100vw is not equivalent to 100% on the <html> element--the scroll bars are taken into account for % but not for vws. The relatively easy fix below forces <html> to be 100vw wide and is included, by default, in the vw-base mixin. If 100vw is larger than 100% it applies a negative margin to center the <html> element. The only caveat is that a little bit of your page will be trimmed on the sides.
 
 ````
-body {
-	width: 100vw;
-	margin-left: calc((100% - 100vw) / 2);
-	overflow-x: hidden;
-}
-````
 
-#### Old Android Browsers Fallback
-
-For old Android native browsers, use the following fallback:
-
-````
 html {
-	@for $i from (320/2) through (strip-units($mobile-max)/2) {
-		@media screen and (width: $i * 2px - 1px), (width: $i * 2px) {
-			font-size: ($i * 2px) / strip-units($mobile-layout);
-		}
+	@media screen {
+		width: 100vw;
+		margin-left: calc((100% - 100vw) / 2);
+		overflow-x: hidden;
 	}
 }
+
 ````
 
-## Credits:
-[Jesse Hemminger](https://github.com/hemminger8/vw-starter-kit)
+To disable the fix in the vw-base mixin (for e.g., if you're applying vw-base to components, rather than to the <html> element) pass a value of false to the mixin:
+
+````
+
+html {
+	@include vw-base(false);
+}
+
+````
+
+####Print Stylesheets
+
+VWs are interpreted as 0px when you print which renders elements invisible. To avoid undesirable styling, keep all vw styles within @media screen blocks.
+
+Style for desktop first, then use @media **screen** to override your styles for tablet and mobile.
+
+### Browser Compatibility
+IE9+, Firefox, Chrome, Safari, iOS, Android 4.4+

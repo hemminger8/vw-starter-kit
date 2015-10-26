@@ -11,20 +11,20 @@
 
 ---------------------------------------------------------------------------- */
 
+	// base font size must be in pixels!!!
 	$base-font-size: 16px;
 
 	// layouts -- the pixel width of the Photoshop file for each layout
-	$desktop-layout: 	1250px;
-	$tablet-layout: 	640px;
-	$mobile-layout: 	320px;
+	$desktop-layout:	1250px;
+	$tablet-layout:		640px;
+	$mobile-layout:		320px;
 
-	// breakpoints -- the browser window size at which the layout should change
+	// min max breakpoints -- the browser window size at which the layout should change
 	$desktop-max: 		1250px;
 	$desktop-min: 		900px;
 	$tablet-max: 		899px;
 	$tablet-min: 		601px;
 	$mobile-max: 		600px;
-
 
 /* ----------------------------------------------------------------------------
 
@@ -81,22 +81,22 @@
 		$base-font-size: 16px;
 
 		html {
-		    font-size: $base-font-size;
+			font-size: $base-font-size;
 
 			// set font-size to scale until reach max width of the site
-		    @media screen and (max-width: $desktop-max) {
-		        font-size: px2vw($base-font-size, $desktop-layout);
-		    }
+			@media screen and (max-width: $desktop-max) {
+				font-size: px2vw($base-font-size, $desktop-layout);
+			}
 
 			// font size reset to 16px at the tablet design layout width
-		    @media screen and (max-width: $tablet-max) {
-		        font-size: px2vw($base-font-size, $tablet-layout);
-		    }
+			@media screen and (max-width: $tablet-max) {
+				font-size: px2vw($base-font-size, $tablet-layout);
+			}
 
 			// font size reset to 16px at the mobile design layout width
-		    @media screen and (max-width: $mobile-max) {
-		        font-size: px2vw($base-font-size, $mobile-layout);
-		    }
+			@media screen and (max-width: $mobile-max) {
+				font-size: px2vw($base-font-size, $mobile-layout);
+			}
 		}
 
 ---------------------------------------------------------------------------- */
@@ -107,6 +107,40 @@
 	$layout-size-px   : strip-units($layout-size-px);
 
 	@return ($font-size-px / $layout-size-px) * 100vw;
+}
+
+/* ----------------------------------------------------------------------------
+
+	vw-base() - set base font-size values in vws for each breakpoint
+
+---------------------------------------------------------------------------- */
+
+@mixin vw-base($body-width-fix: true) {
+
+	@if ($body-width-fix) {
+		@media screen {
+			width: 100vw;
+			margin-left: calc((100% - 100vw) / 2);
+			overflow-x: hidden;
+		}
+	}
+
+	font-size: $base-font-size * ($desktop-max/$desktop-layout);
+
+	// set font-size to scale until reach max width of the site
+	@media screen and (max-width: $desktop-max) {
+		font-size: px2vw($base-font-size, $desktop-layout);
+	}
+
+	// font size reset to 16px at the tablet design layout width
+	@media screen and (max-width: $tablet-max) {
+		font-size: px2vw($base-font-size, $tablet-layout);
+	}
+
+	// font size reset to 16px at the mobile design layout width
+	@media screen and (max-width: $mobile-max) {
+		font-size: px2vw($base-font-size, $mobile-layout);
+	}
 }
 
 /* ----------------------------------------------------------------------------
