@@ -11,28 +11,20 @@
 
 ---------------------------------------------------------------------------- */
 
+	// base font size must be in pixels!!!
 	$base-font-size: 16px;
 
 	// layouts -- the pixel width of the Photoshop file for each layout
-	// min max -- the browser window size at which the layout should change
-	$desktop: (
-		max:    1250px,
-		layout: 1250px,
-		min:    900px
-	);
-	$tablet: (
-		max:    899px,
-		layout: 640px,
-		min:    601px
-	);
-	$mobile: (
-		max:    600px,
-		layout: 320px,
-		min:    0px
-	);
+	$desktop-layout: 	1250px;
+	$tablet-layout: 	640px;
+	$mobile-layout: 	320px;
 
-	$breakpoints: ($desktop, $tablet, $mobile);
-
+	// min max breakpoints -- the browser window size at which the layout should change
+	$desktop-max: 		1250px;
+	$desktop-min: 		900px;
+	$tablet-max: 		899px;
+	$tablet-min: 		601px;
+	$mobile-max: 		600px;
 
 /* ----------------------------------------------------------------------------
 
@@ -119,22 +111,27 @@
 
 /* ----------------------------------------------------------------------------
 
-   vw-base(16px, (("layout-max-width": 1250, "layout-size": 1250),("layout-max-width": 600, "layout-size": 320))) : 
-   vw-base(16px, (("layout-max-width": 1250, "layout-size": 1250),("layout-max-width": 960, "layout-size": 768),("layout-max-width": 600, "layout-size": 320))) : 
-
+   vw-base(16px)
 
 ---------------------------------------------------------------------------- */
 
-@mixin vw-base($font-size-px: $base-font-size) {
+@mixin vw-base() {
 
-	font-size: $font-size-px;
+	font-size: $base-font-size*($desktop-max/$desktop-layout);
 
-	@each $breakpoint in $breakpoints {
-		// set font-size to scale until reach max width of the site
-		@media screen and (max-width: map-get($breakpoint, "max")) {
-			font-size: px2vw($font-size-px, map-get($breakpoint, "layout"));
-		}
-		
+	// set font-size to scale until reach max width of the site
+	@media screen and (max-width: $desktop-max) {
+		font-size: px2vw($base-font-size, $desktop-layout);
+	}
+
+	// font size reset to 16px at the tablet design layout width
+	@media screen and (max-width: $tablet-max) {
+		font-size: px2vw($base-font-size, $tablet-layout);
+	}
+
+	// font size reset to 16px at the mobile design layout width
+	@media screen and (max-width: $mobile-max) {
+		font-size: px2vw($base-font-size, $mobile-layout);
 	}
 }
 
