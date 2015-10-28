@@ -9,6 +9,7 @@ The VW Starter Kit quickly sets you up to create dynamically-resizing, responsiv
 
 ````
 
+	// base font size must be in pixels!!!
 	$base-font-size: 16px;
 
 	// layouts -- the pixel width of the Photoshop file for each layout
@@ -28,7 +29,7 @@ The VW Starter Kit quickly sets you up to create dynamically-resizing, responsiv
 
 There are a couple different ways you can use VWs in your project.
 
-Option 1: Apply the vw-base mixin to the root <html> element. Then, in your CSS, set your style measurements (font-size, padding, margin, etc.) for all other elements using the px2rem() function.
+Option 1 (recommended): Apply the vw-base mixin to the root <html> element. Then, in your CSS, set your style measurements (font-size, padding, margin, width, height, position, etc.) for all other elements using the px2rem() function. Simply measure your dimmensions and values in pixels in Photoshop, and enter the pixel value into the px2rem() function. Your value will be converted to REMs, which are similar to EMs except that they are relative to the root element and will not be affected by the parent element's font-size.
 
 ````
 
@@ -43,7 +44,7 @@ Option 1: Apply the vw-base mixin to the root <html> element. Then, in your CSS,
 
 ````
 
-Option 2: To affect individual components only, apply the vw-base mixin to the component container element. Then, use ems and the px2em() function to resize all component elements.
+Option 2: To affect individual components only, apply the vw-base mixin to the component container element. Then, use ems and the px2em() function to resize all component elements. This is a little more complicated because EMs are relative to the font-size of the context in which they are used. Therefore, if the context is different from $base-font-size you will have to pass the context into the px2em() function as the second paramater, as in the margin style example below.
 
 ````
 
