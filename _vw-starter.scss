@@ -134,8 +134,8 @@
 		}
 	}
 	@else {
-			// continue scaling for large displays
-			font-size: px2vw($base-font-size, $desktop-layout);
+		// continue scaling for large displays
+		font-size: px2vw($base-font-size, $desktop-layout);
 	}
 
 	// font size reset to 16px at the tablet design layout width
