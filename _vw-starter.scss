@@ -12,19 +12,19 @@
 ---------------------------------------------------------------------------- */
 
 	// base font size must be in pixels!!!
-	$base-font-size: 16px;
+	$base-font-size: 16px !default;
 
 	// layouts -- the pixel width of the Photoshop file for each layout
-	$desktop-layout:	1250px;
-	$tablet-layout:		640px;
-	$mobile-layout:		320px;
+	$desktop-layout:	1250px !default;
+	$tablet-layout:		640px !default;
+	$mobile-layout:		320px !default;
 
 	// min max breakpoints -- the browser window size at which the layout should change
-	$desktop-max: 		1250px;
-	$desktop-min: 		900px;
-	$tablet-max: 		899px;
-	$tablet-min: 		601px;
-	$mobile-max: 		600px;
+	$desktop-max: 		1250px !default;
+	$desktop-min: 		900px !default;
+	$tablet-max: 		899px !default;
+	$tablet-min: 		601px !default;
+	$mobile-max: 		600px !default;
 
 /* ----------------------------------------------------------------------------
 
