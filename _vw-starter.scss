@@ -141,6 +141,11 @@
 	@media screen and (max-width: $mobile-max) {
 		font-size: px2vw($base-font-size, $mobile-layout);
 	}
+	
+	// because of possible rounding, we make sure the font-size is correct at the layout sizes
+	@media screen and (width: $layout-desktop) screen and (width: $layout-tablet), screen and (width: $layout-mobile) {
+		font-size: $base-font-size;
+	}
 }
 
 /* ----------------------------------------------------------------------------
