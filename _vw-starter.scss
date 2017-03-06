@@ -54,7 +54,7 @@
 	$pixels                    : strip-units($pixels);
 	$unitless-base-font-size   : strip-units($base-font-size);
 
-	@return #{$pixels/$unitless-base-font-size}rem;
+	@return ($pixels/$unitless-base-font-size)*1rem;
 }
 
 
@@ -69,7 +69,7 @@
 	$pixels    : strip-units($pixels);
 	$context   : strip-units($context);
 
-	@return #{$pixels/$context}em;
+	@return ($pixels/$context)*1em;
 }
 
 /* ----------------------------------------------------------------------------
