@@ -145,7 +145,7 @@
 	// because of possible rounding, we make sure the font-size is correct at the layout sizes
 	@media screen and (width: $layout-desktop) and (min-width: $desktop-min) and (max-width: $desktop-max),
 	screen and (width: $layout-tablet) and (min-width: $tablet-min) and (max-width: $tablet-max),
-	screen and (width: $layout-mobile) and (min-width: $mobile-min) and (max-width: $mobile-max) {
+	screen and (width: $layout-mobile) and (max-width: $mobile-max) {
 		font-size: $base-font-size;
 	}
 }
