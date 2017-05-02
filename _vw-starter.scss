@@ -12,7 +12,7 @@
 ---------------------------------------------------------------------------- */
 
 	// base font size must be in pixels!!!
-	$base-font-size: 16px !default;
+	$root-font-size-constant: 16px !default;
 
 	// layouts -- the pixel width of the Photoshop file for each layout
 	$desktop-layout:	1250px !default;
@@ -52,7 +52,7 @@
 @function px2rem($pixels) {
 
 	$pixels                    : strip-units($pixels);
-	$unitless-base-font-size   : strip-units($base-font-size);
+	$unitless-base-font-size   : strip-units($root-font-size-constant);
 
 	@return ($pixels/$unitless-base-font-size)*1rem;
 }
@@ -64,7 +64,7 @@
 
 ---------------------------------------------------------------------------- */
 
-@function px2em($pixels, $context: $base-font-size) {
+@function px2em($pixels, $context: $root-font-size-constant) {
 
 	$pixels    : strip-units($pixels);
 	$context   : strip-units($context);
@@ -78,24 +78,24 @@
 
    Example usage:
 
-		$base-font-size: 16px;
+		$root-font-size-constant: 16px;
 
 		html {
-			font-size: $base-font-size;
+			font-size: $root-font-size-constant;
 
 			// set font-size to scale until reach max width of the site
 			@media screen and (max-width: $desktop-max) {
-				font-size: px2vw($base-font-size, $desktop-layout);
+				font-size: px2vw($root-font-size-constant, $desktop-layout);
 			}
 
 			// font size reset to 16px at the tablet design layout width
 			@media screen and (max-width: $tablet-max) {
-				font-size: px2vw($base-font-size, $tablet-layout);
+				font-size: px2vw($root-font-size-constant, $tablet-layout);
 			}
 
 			// font size reset to 16px at the mobile design layout width
 			@media screen and (max-width: $mobile-max) {
-				font-size: px2vw($base-font-size, $mobile-layout);
+				font-size: px2vw($root-font-size-constant, $mobile-layout);
 			}
 		}
 
@@ -125,28 +125,28 @@
 		}
 	}
 
-	font-size: $base-font-size * ($desktop-max/$desktop-layout);
+	font-size: $root-font-size-constant * ($desktop-max/$desktop-layout);
 
 	// set font-size to scale until reach max width of the site
 	@media screen and (max-width: $desktop-max) {
-		font-size: px2vw($base-font-size, $desktop-layout);
+		font-size: px2vw($root-font-size-constant, $desktop-layout);
 	}
 
 	// font size reset to 16px at the tablet design layout width
 	@media screen and (max-width: $tablet-max) {
-		font-size: px2vw($base-font-size, $tablet-layout);
+		font-size: px2vw($root-font-size-constant, $tablet-layout);
 	}
 
 	// font size reset to 16px at the mobile design layout width
 	@media screen and (max-width: $mobile-max) {
-		font-size: px2vw($base-font-size, $mobile-layout);
+		font-size: px2vw($root-font-size-constant, $mobile-layout);
 	}
 	
 	// because of possible rounding, we make sure the font-size is correct at the layout sizes
 	@media screen and (width: $layout-desktop) and (min-width: $desktop-min) and (max-width: $desktop-max),
 	screen and (width: $layout-tablet) and (min-width: $tablet-min) and (max-width: $tablet-max),
 	screen and (width: $layout-mobile) and (max-width: $mobile-max) {
-		font-size: $base-font-size;
+		font-size: $root-font-size-constant;
 	}
 }
 
@@ -168,7 +168,7 @@
 
 ---------------------------------------------------------------------------- */
 
-@function font-size-breakpoint($font-size-limit-px, $layout-size-px, $font-size-px: $base-font-size) {
+@function font-size-breakpoint($font-size-limit-px, $layout-size-px, $font-size-px: $root-font-size-constant) {
 
 	@return (($font-size-limit-px / $font-size-px) * $layout-size-px);
 }
