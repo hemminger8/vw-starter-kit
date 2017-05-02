@@ -3,13 +3,13 @@
 // https://github.com/hemminger8/vw-starter-kit
 //
 
-/* ----------------------------------------------------------------------------
-
-   Variables
-
-   Set the variables below to match your Photoshop file widths (in pixels) and to specify breakpoints based on browser window size.
-
----------------------------------------------------------------------------- */
+// ----------------------------------------------------------------------------
+//
+//   Variables
+//
+//   Set the variables below to match your Photoshop file widths (in pixels) and to specify breakpoints based on browser window size.
+//
+// ---------------------------------------------------------------------------- 
 
 	// base font size must be in pixels!!!
 	$root-font-size-constant: 16px !default;
@@ -26,11 +26,11 @@
 	$tablet-min: 		601px !default;
 	$mobile-max: 		600px !default;
 
-/* ----------------------------------------------------------------------------
-
-   strip-units() : convert 14px/14em/etc to (int) 14
-
----------------------------------------------------------------------------- */
+// ----------------------------------------------------------------------------
+//
+//   strip-units() : convert 14px/14em/etc to (int) 14
+//
+// ----------------------------------------------------------------------------
 
 @function strip-units($number) {
 
@@ -43,11 +43,11 @@
 	@return $number / ($number * 0 + 1);
 }
 
-/* ----------------------------------------------------------------------------
-
-   px2rem() : convert from pixels to rems
-
----------------------------------------------------------------------------- */
+// ----------------------------------------------------------------------------
+//
+//   px2rem() : convert from pixels to rems
+//
+// ----------------------------------------------------------------------------
 
 @function px2rem($pixels) {
 
@@ -58,11 +58,11 @@
 }
 
 
-/* ----------------------------------------------------------------------------
-
-   px2em() : convert from pixels to ems, based on the context (inherited font-size in pixels)
-
----------------------------------------------------------------------------- */
+// ----------------------------------------------------------------------------
+//
+//   px2em() : convert from pixels to ems, based on the context (inherited font-size in pixels)
+//
+// ----------------------------------------------------------------------------
 
 @function px2em($pixels, $context: $root-font-size-constant) {
 
@@ -72,34 +72,34 @@
 	@return ($pixels/$context)*1em;
 }
 
-/* ----------------------------------------------------------------------------
-
-   px2vw() : used to calculate vw font size so as to match Photoshop (or similar) design files.
-
-   Example usage:
-
-		$root-font-size-constant: 16px;
-
-		html {
-			font-size: $root-font-size-constant;
-
-			// set font-size to scale until reach max width of the site
-			@media screen and (max-width: $desktop-max) {
-				font-size: px2vw($root-font-size-constant, $desktop-layout);
-			}
-
-			// font size reset to 16px at the tablet design layout width
-			@media screen and (max-width: $tablet-max) {
-				font-size: px2vw($root-font-size-constant, $tablet-layout);
-			}
-
-			// font size reset to 16px at the mobile design layout width
-			@media screen and (max-width: $mobile-max) {
-				font-size: px2vw($root-font-size-constant, $mobile-layout);
-			}
-		}
-
----------------------------------------------------------------------------- */
+// ----------------------------------------------------------------------------
+//
+//   px2vw() : used to calculate vw font size so as to match Photoshop (or similar) design files.
+//
+//   Example usage:
+//
+//		$root-font-size-constant: 16px;
+//
+//		html {
+//			font-size: $root-font-size-constant;
+//
+//			// set font-size to scale until reach max width of the site
+//			@media screen and (max-width: $desktop-max) {
+//				font-size: px2vw($root-font-size-constant, $desktop-layout);
+//			}
+//
+//			// font size reset to 16px at the tablet design layout width
+//			@media screen and (max-width: $tablet-max) {
+//				font-size: px2vw($root-font-size-constant, $tablet-layout);
+//			}
+//
+//			// font size reset to 16px at the mobile design layout width
+//			@media screen and (max-width: $mobile-max) {
+//				font-size: px2vw($root-font-size-constant, $mobile-layout);
+//			}
+//		}
+//
+// ----------------------------------------------------------------------------
 
 @function px2vw($font-size-px, $layout-size-px) {
 
@@ -109,11 +109,11 @@
 	@return ($font-size-px / $layout-size-px) * 100vw;
 }
 
-/* ----------------------------------------------------------------------------
-
-	vw-base() - set base font-size values in vws for each breakpoint
-
----------------------------------------------------------------------------- */
+// ----------------------------------------------------------------------------
+//
+//	vw-base() - set base font-size values in vws for each breakpoint
+//
+// ----------------------------------------------------------------------------
 
 @mixin vw-base($body-width-fix: true) {
 
@@ -150,23 +150,23 @@
 	}
 }
 
-/* ----------------------------------------------------------------------------
-
-	font-size-breakpoint() - calculate min/max font size breakpoints (for specific components)
-
-	Example usage:
-
-		blockquote {
-			font-size: px2rem(17); // scaling down from a base size of 17px
-
-			// when font-size shrinks to 12px, set the CSS to 12px to stop
-			// further scaling
-			@media (max-width: font-size-breakpoint(12px, $desktop-layout, 17px)) {
-				font-size: 12px;
-			}
-		}
-
----------------------------------------------------------------------------- */
+// ----------------------------------------------------------------------------
+//
+//	font-size-breakpoint() - calculate min/max font size breakpoints (for specific components)
+//
+//	Example usage:
+//
+//		blockquote {
+//			font-size: px2rem(17); // scaling down from a base size of 17px
+//
+//			// when font-size shrinks to 12px, set the CSS to 12px to stop
+//			// further scaling
+//			@media (max-width: font-size-breakpoint(12px, $desktop-layout, 17px)) {
+//				font-size: 12px;
+//			}
+//		}
+//
+// ----------------------------------------------------------------------------
 
 @function font-size-breakpoint($font-size-limit-px, $layout-size-px, $font-size-px: $root-font-size-constant) {
 
