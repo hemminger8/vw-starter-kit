@@ -115,7 +115,7 @@
 
 ---------------------------------------------------------------------------- */
 
-@mixin vw-base($body-width-fix: true) {
+@mixin vw-base($body-width-fix: true, $limit-desktop-max: true) {
 
 	@if ($body-width-fix) {
 		@media screen {
@@ -125,10 +125,16 @@
 		}
 	}
 
-	font-size: $base-font-size * ($desktop-max/$desktop-layout);
+	@if ($limit-desktop-max) {
+		font-size: $base-font-size * ($desktop-max/$desktop-layout);
 
-	// set font-size to scale until reach max width of the site
-	@media screen and (max-width: $desktop-max) {
+		// set font-size to scale until reach max width of the site
+		@media screen and (max-width: $desktop-max) {
+			font-size: px2vw($base-font-size, $desktop-layout);
+		}
+	}
+	@else {
+		// continue scaling for large displays
 		font-size: px2vw($base-font-size, $desktop-layout);
 	}
 
